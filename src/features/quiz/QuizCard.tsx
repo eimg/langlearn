@@ -71,12 +71,20 @@ const QuizCard = ({
   const [remaining, setRemaining] = useState(countdownSeconds)
   const [revealed, setRevealed] = useState(false)
   const [paused, setPaused] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     setRemaining(countdownSeconds)
     setRevealed(false)
     setPaused(false)
   }, [item, countdownSeconds, resetKey])
+
+  useEffect(() => {
+    if (mode !== 'objects') return
+    setImageLoaded(false)
+    setImageError(false)
+  }, [mode, item])
 
   useEffect(() => {
     if (revealSignal > 0) {
@@ -90,9 +98,15 @@ const QuizCard = ({
     }
   }, [revealed])
 
+  const objectImageUrl = useMemo(
+    () => (mode === 'objects' ? item.image_url : null),
+    [item, mode],
+  )
+
   useEffect(() => {
     if (paused) return
     if (revealed) return
+    if (mode === 'objects' && objectImageUrl && !imageLoaded && !imageError) return
     if (remaining <= 0) {
       setRevealed(true)
       return
@@ -101,7 +115,7 @@ const QuizCard = ({
       setRemaining((value) => Math.max(0, value - 1))
     }, 1000)
     return () => window.clearTimeout(timer)
-  }, [remaining, revealed, paused])
+  }, [remaining, revealed, paused, mode, objectImageUrl, imageLoaded, imageError])
 
   const promptText = useMemo(() => {
     if (mode === 'phrases') {
@@ -182,11 +196,23 @@ const QuizCard = ({
 			<CardContent className="space-y-4">
 				{mode === "objects" && item.image_url ? (
 					<div className="flex justify-center">
-						<img
-							src={item.image_url}
-							alt={promptText}
-							className="h-48 w-48 rounded-xl object-cover shadow-sm"
-						/>
+						<div className="relative h-48 w-48">
+							<img
+								key={item.image_url}
+								src={item.image_url}
+								alt={promptText}
+								className={`h-48 w-48 rounded-xl object-cover shadow-sm ${
+									imageLoaded ? "opacity-100" : "opacity-0"
+								}`}
+								onLoad={() => setImageLoaded(true)}
+								onError={() => setImageError(true)}
+							/>
+							{!imageLoaded ? (
+								<div className="absolute inset-0 flex items-center justify-center rounded-xl border border-dashed border-white/80 bg-white/80 text-sm text-slate-500 shadow-sm">
+									{imageError ? "Image failed to load." : "Loading image..."}
+								</div>
+							) : null}
+						</div>
 					</div>
 				) : mode === "objects" ? (
 					<div className="rounded-2xl border border-dashed border-white/80 bg-white/80 p-6 text-center text-sm text-slate-500">
