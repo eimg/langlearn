@@ -1,6 +1,8 @@
-# Langlearn
+# LangLearn
 
 Langlearn is a lightweight language learning app for practicing phrases and object vocabulary with timed quiz cards. It supports multilingual prompts, image-based object learning, and a simple admin flow to add or update content.
+
+Live: https://eimaung.com/langlearn/
 
 ## Tech stack
 
