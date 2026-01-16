@@ -1,0 +1,20 @@
+{
+  "name": "langlearn",
+  "short_name": "langlearn",
+  "start_url": "/langlearn/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#38BDF8",
+  "icons": [
+    {
+      "src": "/langlearn/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/langlearn/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
