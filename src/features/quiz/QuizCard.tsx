@@ -152,12 +152,27 @@ const QuizCard = ({
 			<CardHeader className="space-y-2">
 				<div className="flex flex-wrap items-center justify-between gap-2">
 					<div
-						className={`rounded-full px-3 py-1.5 text-base ${
+						className={`flex items-center justify-center rounded-full px-3 py-1.5 ${
 							paused
 								? "bg-red-100 text-red-700"
 								: "bg-emerald-100 text-emerald-700"
 						}`}>
-						{paused ? "⏸" : "▶"}
+						{paused ? (
+							<svg
+								aria-hidden="true"
+								viewBox="0 0 24 24"
+								className="h-5 w-5">
+								<rect x="5" y="4" width="5" height="16" rx="1" fill="currentColor" />
+								<rect x="14" y="4" width="5" height="16" rx="1" fill="currentColor" />
+							</svg>
+						) : (
+							<svg
+								aria-hidden="true"
+								viewBox="0 0 24 24"
+								className="h-5 w-5">
+								<path d="M6 4L19 12L6 20V4Z" fill="currentColor" />
+							</svg>
+						)}
 					</div>
 					<div className="px-3 py-1 text-lg font-semibold text-amber-600">
 						{remaining}s
